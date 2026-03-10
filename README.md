@@ -29,29 +29,29 @@ bun run build
 node packages/cli/dist/cli.js
 
 # Run the CLI package directly in dev mode
-bun --filter codegraph-cli run dev
+bun run --cwd packages/cli dev
 
 # Or if installed as a package binary
-codegraph-usage
+slopmeter
 ```
 
 ### Options
 
 ```bash
 # Output file (default: ./heatmap-last-year.png)
-codegraph-usage --output ./out/heatmap.svg
-codegraph-usage -o ./out/heatmap.svg
+slopmeter --output ./out/heatmap.svg
+slopmeter -o ./out/heatmap.svg
 
 # Output format
-codegraph-usage --format png
-codegraph-usage --format svg
-codegraph-usage --format json
-codegraph-usage -f svg
+slopmeter --format png
+slopmeter --format svg
+slopmeter --format json
+slopmeter -f svg
 
 # Provider filters (optional)
-codegraph-usage --claude
-codegraph-usage --codex
-codegraph-usage --opencode
+slopmeter --claude
+slopmeter --codex
+slopmeter --opencode
 ```
 
 ## What the image shows
@@ -97,7 +97,7 @@ Model names are normalized to remove a trailing date suffix like `-20251101`.
 npx shadcn@latest add ./packages/registry/public/r/codegraph-heatmap.json
 ```
 
-The component accepts the JSON produced by `codegraph-usage --format json` and renders provider heatmaps with per-day model tooltips.
+The component accepts the JSON produced by `slopmeter --format json` and renders provider heatmaps with per-day model tooltips.
 Provider heatmap shades are defined in the registry item via `cssVars.theme`.
 
 ## Provider/data behavior

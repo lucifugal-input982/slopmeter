@@ -91,16 +91,16 @@ function parseClaudeLogEntry(entry: ClaudeRawLogEntry): ClaudeLogEntry | null {
 }
 
 function createClaudeTokenTotals(usage: ClaudeUsagePayload): DailyTokenTotals {
-  const input = usage.input_tokens ?? 0;
-  const output = usage.output_tokens ?? 0;
-  const cacheInput = usage.cache_read_input_tokens ?? 0;
-  const cacheOutput = usage.cache_creation_input_tokens ?? 0;
+  const cacheReadInput = usage.cache_read_input_tokens ?? 0;
+  const cacheCreationInput = usage.cache_creation_input_tokens ?? 0;
+  const input = (usage.input_tokens ?? 0) + cacheReadInput;
+  const output = (usage.output_tokens ?? 0) + cacheCreationInput;
 
   return {
     input,
     output,
-    cache: { input: cacheInput, output: cacheOutput },
-    total: input + output + cacheInput + cacheOutput,
+    cache: { input: cacheReadInput, output: cacheCreationInput },
+    total: input + output,
   };
 }
 

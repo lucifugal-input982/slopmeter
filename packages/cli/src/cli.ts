@@ -29,12 +29,12 @@ const PNG_SCALE = 4;
 const PNG_RENDER_WIDTH = PNG_BASE_WIDTH * PNG_SCALE;
 const JSON_EXPORT_VERSION = "2026-03-03";
 
-const HELP_TEXT = `codegraph-usage
+const HELP_TEXT = `slopmeter
 
 Generate rolling 1-year usage heatmap image(s) (today is the latest day).
 
 Usage:
-  codegraph-usage [--claude] [--codex] [--opencode] [--format png|svg|json] [--output ./heatmap-last-year.png]
+  slopmeter [--claude] [--codex] [--opencode] [--format png|svg|json] [--output ./heatmap-last-year.png]
 
 Options:
   --claude                    Render Claude Code graph

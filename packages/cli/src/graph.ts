@@ -21,6 +21,7 @@ interface SectionLayout {
   cellSize: number;
   gap: number;
   headerCaptionY: number;
+  headerValueY: number;
   titleY: number;
   monthLabelY: number;
   legendY: number;
@@ -94,6 +95,11 @@ const daysOfWeekMonday = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const numberFormatter = new Intl.NumberFormat("en-US");
 const fontFamily =
   "ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif";
+const mutedColor = "#737373";
+const providerTitleFontSize = 20;
+const metricCaptionFontSize = 9;
+const metricValueFontSize = 14;
+const captionValueGap = 4;
 
 function formatTokenTotal(value: number) {
   const units = [
@@ -215,24 +221,26 @@ function getSectionLayout(weekCount: number) {
   const gap = 2;
   const leftLabelWidth = 34;
   const rightPadding = 20;
-  const metricCaptionValueGap = 15;
-  const headerValueY = 16;
-  const headerCaptionY = headerValueY - metricCaptionValueGap;
-  const topPadding = 40;
+  const headerCaptionY = 0;
+  const headerValueY =
+    headerCaptionY + metricCaptionFontSize + captionValueGap;
+  const topMetricHeight = headerValueY + metricValueFontSize;
+  const topPadding = Math.max(providerTitleFontSize, topMetricHeight) + 20;
   const monthHeaderHeight = 20;
-  const titleY = headerValueY;
+  const titleY = 0;
   const monthLabelY = topPadding + 4;
   const gridTop = topPadding + monthHeaderHeight;
   const gridHeight = 7 * cellSize + 6 * gap;
   const gridWidth = weekCount * cellSize + Math.max(weekCount - 1, 0) * gap;
-  const legendY = gridTop + gridHeight + 10;
+  const legendY = gridTop + gridHeight + 28;
   const legendBottomY = legendY + cellSize;
-  const footerTopPadding = 18;
+  const footerTopPadding = 32;
   const footerCaptionY = legendBottomY + footerTopPadding;
-  const footerValueY = footerCaptionY + metricCaptionValueGap;
+  const footerValueY =
+    footerCaptionY + metricCaptionFontSize + captionValueGap;
   const statsBottomPadding = 12;
   const width = leftLabelWidth + gridWidth + rightPadding;
-  const height = footerValueY + statsBottomPadding;
+  const height = footerValueY + metricValueFontSize + statsBottomPadding;
 
   return {
     width,
@@ -242,6 +250,7 @@ function getSectionLayout(weekCount: number) {
     cellSize,
     gap,
     headerCaptionY,
+    headerValueY,
     titleY,
     monthLabelY,
     legendY,
@@ -293,8 +302,9 @@ function drawHeatmapSection(
       x: leftColumnX,
       y: y + layout.titleY,
       fill: "#0f172a",
-      "font-size": 12,
+      "font-size": providerTitleFontSize,
       "font-weight": 600,
+      "dominant-baseline": "hanging",
       "font-family": fontFamily,
     },
     title,
@@ -304,10 +314,11 @@ function drawHeatmapSection(
     {
       x: headerInputX,
       y: y + layout.headerCaptionY,
-      fill: "#64748b",
-      "font-size": 9,
+      fill: mutedColor,
+      "font-size": metricCaptionFontSize,
       "font-weight": 600,
       "text-anchor": "end",
+      "dominant-baseline": "hanging",
       "font-family": fontFamily,
     },
     caption("Input tokens"),
@@ -316,11 +327,12 @@ function drawHeatmapSection(
   svg = svg.text(
     {
       x: headerInputX,
-      y: y + layout.titleY,
+      y: y + layout.headerValueY,
       fill: "#0f172a",
-      "font-size": 12,
+      "font-size": metricValueFontSize,
       "font-weight": 600,
       "text-anchor": "end",
+      "dominant-baseline": "hanging",
       "font-family": fontFamily,
     },
     totalInputLabel,
@@ -330,10 +342,11 @@ function drawHeatmapSection(
     {
       x: headerOutputX,
       y: y + layout.headerCaptionY,
-      fill: "#64748b",
-      "font-size": 9,
+      fill: mutedColor,
+      "font-size": metricCaptionFontSize,
       "font-weight": 600,
       "text-anchor": "end",
+      "dominant-baseline": "hanging",
       "font-family": fontFamily,
     },
     caption("Output tokens"),
@@ -342,11 +355,12 @@ function drawHeatmapSection(
   svg = svg.text(
     {
       x: headerOutputX,
-      y: y + layout.titleY,
+      y: y + layout.headerValueY,
       fill: "#0f172a",
-      "font-size": 12,
+      "font-size": metricValueFontSize,
       "font-weight": 600,
       "text-anchor": "end",
+      "dominant-baseline": "hanging",
       "font-family": fontFamily,
     },
     totalOutputLabel,
@@ -356,10 +370,11 @@ function drawHeatmapSection(
     {
       x: rightEdge,
       y: y + layout.headerCaptionY,
-      fill: "#64748b",
-      "font-size": 9,
+      fill: mutedColor,
+      "font-size": metricCaptionFontSize,
       "font-weight": 600,
       "text-anchor": "end",
+      "dominant-baseline": "hanging",
       "font-family": fontFamily,
     },
     caption("Total tokens"),
@@ -368,11 +383,12 @@ function drawHeatmapSection(
   svg = svg.text(
     {
       x: rightEdge,
-      y: y + layout.titleY,
+      y: y + layout.headerValueY,
       fill: "#0f172a",
-      "font-size": 12,
+      "font-size": metricValueFontSize,
       "font-weight": 600,
       "text-anchor": "end",
+      "dominant-baseline": "hanging",
       "font-family": fontFamily,
     },
     totalTokensLabel,
@@ -391,7 +407,7 @@ function drawHeatmapSection(
       {
         x: x + layout.leftLabelWidth - 6,
         y: dayY,
-        fill: "#64748b",
+        fill: mutedColor,
         "font-size": 10,
         "text-anchor": "end",
         "dominant-baseline": "middle",
@@ -412,7 +428,7 @@ function drawHeatmapSection(
         {
           x: monthX,
           y: y + layout.monthLabelY,
-          fill: "#475569",
+          fill: mutedColor,
           "font-size": 10,
           "font-family": fontFamily,
         },
@@ -457,7 +473,7 @@ function drawHeatmapSection(
     {
       x: legendStartX,
       y: legendY + 10,
-      fill: "#64748b",
+      fill: mutedColor,
       "font-size": 10,
       "font-weight": 600,
       "font-family": fontFamily,
@@ -483,7 +499,7 @@ function drawHeatmapSection(
     {
       x: legendStartX + 28 + colors.length * (layout.cellSize + 3) + 6,
       y: legendY + 10,
-      fill: "#64748b",
+      fill: mutedColor,
       "font-size": 10,
       "font-weight": 600,
       "font-family": fontFamily,
@@ -519,9 +535,10 @@ function drawHeatmapSection(
       {
         x: modelX,
         y: y + captionY,
-        fill: "#64748b",
-        "font-size": 9,
+        fill: mutedColor,
+        "font-size": metricCaptionFontSize,
         "font-weight": 600,
+        "dominant-baseline": "hanging",
         "font-family": fontFamily,
       },
       caption(row.caption),
@@ -531,9 +548,10 @@ function drawHeatmapSection(
       {
         x: modelX,
         y: y + valueY,
+        "dominant-baseline": "hanging",
         "font-family": fontFamily,
       },
-      `<tspan fill="#0f172a" font-size="12" font-weight="600">${escapeXml(modelName)}</tspan><tspan dx="6" fill="#64748b" font-size="11" font-weight="400">${tokenLabel}</tspan>`,
+      `<tspan fill="#0f172a" font-size="${metricValueFontSize}" font-weight="600">${escapeXml(modelName)}</tspan><tspan dx="6" fill="${mutedColor}" font-size="${metricValueFontSize}" font-weight="400">${tokenLabel}</tspan>`,
     );
   }
 
@@ -541,10 +559,11 @@ function drawHeatmapSection(
     {
       x: rightPrimaryX,
       y: y + layout.footerCaptionY,
-      fill: "#64748b",
-      "font-size": 9,
+      fill: mutedColor,
+      "font-size": metricCaptionFontSize,
       "font-weight": 600,
       "text-anchor": "end",
+      "dominant-baseline": "hanging",
       "font-family": fontFamily,
     },
     caption("Longest streak"),
@@ -555,9 +574,10 @@ function drawHeatmapSection(
       x: rightPrimaryX,
       y: y + layout.footerValueY,
       fill: "#0f172a",
-      "font-size": 12,
+      "font-size": metricValueFontSize,
       "font-weight": 600,
       "text-anchor": "end",
+      "dominant-baseline": "hanging",
       "font-family": fontFamily,
     },
     `${numberFormatter.format(longestStreak)} days`,
@@ -567,10 +587,11 @@ function drawHeatmapSection(
     {
       x: rightColumnX,
       y: y + layout.footerCaptionY,
-      fill: "#64748b",
-      "font-size": 9,
+      fill: mutedColor,
+      "font-size": metricCaptionFontSize,
       "font-weight": 600,
       "text-anchor": "end",
+      "dominant-baseline": "hanging",
       "font-family": fontFamily,
     },
     caption("Current streak"),
@@ -581,9 +602,10 @@ function drawHeatmapSection(
       x: rightColumnX,
       y: y + layout.footerValueY,
       fill: "#0f172a",
-      "font-size": 12,
+      "font-size": metricValueFontSize,
       "font-weight": 600,
       "text-anchor": "end",
+      "dominant-baseline": "hanging",
       "font-family": fontFamily,
     },
     `${numberFormatter.format(currentStreak)} days`,
@@ -599,12 +621,15 @@ export function renderUsageHeatmapsSvg({
 }: RenderUsageHeatmapsSvgOptions) {
   const grid = getCalendarGrid(startDate, endDate);
   const layout = getSectionLayout(grid.weeks.length);
-  const outerPadding = 18;
+  const horizontalPadding = 18;
+  const topPadding = 30;
+  const bottomPadding = 18;
   const sectionGap = 40;
 
-  const width = outerPadding * 2 + layout.width;
+  const width = horizontalPadding * 2 + layout.width;
   const height =
-    outerPadding * 2 +
+    topPadding +
+    bottomPadding +
     sections.length * layout.height +
     Math.max(sections.length - 1, 0) * sectionGap;
 
@@ -616,10 +641,10 @@ export function renderUsageHeatmapsSvg({
     .rect({ x: 0, y: 0, width, height, fill: "#ffffff" });
 
   sections.forEach((section, index) => {
-    const sectionY = outerPadding + index * (layout.height + sectionGap);
+    const sectionY = topPadding + index * (layout.height + sectionGap);
 
     svg = drawHeatmapSection(svg, {
-      x: outerPadding,
+      x: horizontalPadding,
       y: sectionY,
       grid,
       layout,

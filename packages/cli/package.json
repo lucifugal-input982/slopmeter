@@ -1,20 +1,45 @@
 {
-  "name": "codegraph-cli",
+  "name": "slopmeter",
   "version": "0.1.0",
-  "private": true,
+  "description": "CLI for generating yearly usage heatmaps for Claude Code, Codex, and Open Code.",
   "type": "module",
   "engines": {
     "node": ">=22"
   },
-  "bin": {
-    "codegraph-usage": "./dist/cli.js"
+  "license": "MIT",
+  "author": "Jean P.D. Meijer",
+  "homepage": "https://github.com/JeanMeijer/codegraph/tree/main/packages/cli",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JeanMeijer/codegraph.git",
+    "directory": "packages/cli"
   },
+  "bugs": {
+    "url": "https://github.com/JeanMeijer/codegraph/issues"
+  },
+  "keywords": [
+    "cli",
+    "heatmap",
+    "usage",
+    "codex",
+    "claude-code",
+    "opencode"
+  ],
+  "bin": {
+    "slopmeter": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "dev": "tsx src/cli.ts",
     "build": "tsup",
     "typecheck": "tsc --noEmit",
     "check": "bun run typecheck && bun run build",
     "start": "node dist/cli.js",
+    "prepublishOnly": "bun run build",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
