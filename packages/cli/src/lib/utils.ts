@@ -753,13 +753,14 @@ export function getProviderInsights(
 ): Insights {
   const mostUsedModel = getTopModel(modelTotals);
   const recentMostUsedModel = getTopModel(recentModelTotals);
+  const measuredDaily = daily.filter((row) => row.total > 0);
 
   return {
     mostUsedModel,
     recentMostUsedModel,
     streaks: {
-      longest: computeLongestStreak(daily),
-      current: computeCurrentStreak(daily, end),
+      longest: computeLongestStreak(measuredDaily),
+      current: computeCurrentStreak(measuredDaily, end),
     },
   };
 }

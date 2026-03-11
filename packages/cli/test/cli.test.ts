@@ -567,6 +567,12 @@ test("Claude falls back to history.jsonl for activity-only days before token log
   const payload = JSON.parse(readFileSync(outputPath, "utf8")) as {
     providers: Array<{
       provider: string;
+      insights: {
+        streaks: {
+          longest: number;
+          current: number;
+        };
+      };
       daily: Array<{
         date: string;
         total: number;
@@ -598,6 +604,10 @@ test("Claude falls back to history.jsonl for activity-only days before token log
       },
     ],
   );
+  assert.deepEqual(payload.providers[0]?.insights.streaks, {
+    longest: 0,
+    current: 0,
+  });
 });
 
 test("Claude fails clearly on oversized JSONL records via the shared splitter", async (t) => {
