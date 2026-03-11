@@ -95,6 +95,7 @@ async function writeOutputImage(
   outputPath: string,
   format: Exclude<OutputFormat, "json">,
   svg: string,
+  background: string,
 ) {
   if (format === "svg") {
     writeFileSync(outputPath, svg, "utf8");
@@ -104,6 +105,7 @@ async function writeOutputImage(
 
   const pngBuffer = await sharp(Buffer.from(svg), { density: 192 })
     .resize({ width: PNG_RENDER_WIDTH })
+    .flatten({ background })
     .png()
     .toBuffer();
 
@@ -114,50 +116,18 @@ function writeOutputJson(outputPath: string, payload: JsonExportPayload) {
   writeFileSync(outputPath, `${JSON.stringify(payload, null, 2)}\n`, "utf8");
 }
 
-function toJsonUsageSummary(
-  summary: UsageSummary,
-  startDate: Date,
-  endDate: Date,
-): JsonUsageSummary {
-  const rowsByDate = new Map(
-    summary.daily.map((row) => [formatLocalDate(row.date), row] as const),
-  );
-  const daily: JsonUsageSummary["daily"] = [];
-  const current = new Date(startDate);
-
-  current.setHours(0, 0, 0, 0);
-
-  while (current <= endDate) {
-    const date = formatLocalDate(current);
-    const row = rowsByDate.get(date);
-
-    daily.push(
-      row
-        ? {
-            date,
-            input: row.input,
-            output: row.output,
-            cache: row.cache,
-            total: row.total,
-            breakdown: row.breakdown,
-          }
-        : {
-            date,
-            input: 0,
-            output: 0,
-            cache: { input: 0, output: 0 },
-            total: 0,
-            breakdown: [],
-          },
-    );
-
-    current.setDate(current.getDate() + 1);
-  }
-
+function toJsonUsageSummary(summary: UsageSummary): JsonUsageSummary {
   return {
     provider: summary.provider,
     insights: summary.insights,
-    daily,
+    daily: summary.daily.map((row) => ({
+      date: formatLocalDate(row.date),
+      input: row.input,
+      output: row.output,
+      cache: row.cache,
+      total: row.total,
+      breakdown: row.breakdown,
+    })),
   };
 }
 
@@ -295,7 +265,7 @@ async function main() {
         start: formatLocalDate(start),
         end: formatLocalDate(end),
         providers: exportProviders.map((provider) =>
-          toJsonUsageSummary(provider, start, end),
+          toJsonUsageSummary(provider),
         ),
       };
 
@@ -315,9 +285,10 @@ async function main() {
           colors: heatmapThemes[provider].colors,
         })),
       });
+      const background = colorMode === "dark" ? "#171717" : "#ffffff";
 
       spinner.text = "Writing output file...";
-      await writeOutputImage(outputPath, format, svg);
+      await writeOutputImage(outputPath, format, svg, background);
     }
 
     spinner.succeed("Analysis complete");
