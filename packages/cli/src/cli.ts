@@ -114,29 +114,60 @@ function writeOutputJson(outputPath: string, payload: JsonExportPayload) {
   writeFileSync(outputPath, `${JSON.stringify(payload, null, 2)}\n`, "utf8");
 }
 
-function toJsonUsageSummary(summary: UsageSummary): JsonUsageSummary {
+function toJsonUsageSummary(
+  summary: UsageSummary,
+  startDate: Date,
+  endDate: Date,
+): JsonUsageSummary {
+  const rowsByDate = new Map(
+    summary.daily.map((row) => [formatLocalDate(row.date), row] as const),
+  );
+  const daily: JsonUsageSummary["daily"] = [];
+  const current = new Date(startDate);
+
+  current.setHours(0, 0, 0, 0);
+
+  while (current <= endDate) {
+    const date = formatLocalDate(current);
+    const row = rowsByDate.get(date);
+
+    daily.push(
+      row
+        ? {
+            date,
+            input: row.input,
+            output: row.output,
+            cache: row.cache,
+            total: row.total,
+            breakdown: row.breakdown,
+          }
+        : {
+            date,
+            input: 0,
+            output: 0,
+            cache: { input: 0, output: 0 },
+            total: 0,
+            breakdown: [],
+          },
+    );
+
+    current.setDate(current.getDate() + 1);
+  }
+
   return {
     provider: summary.provider,
     insights: summary.insights,
-    daily: summary.daily.map((row) => ({
-      date: formatLocalDate(row.date),
-      input: row.input,
-      output: row.output,
-      cache: row.cache,
-      total: row.total,
-      breakdown: row.breakdown,
-    })),
+    daily,
   };
 }
 
 function getDateWindow() {
-  const end = new Date();
-
-  end.setHours(0, 0, 0, 0);
-
-  const start = new Date(end);
-
+  const start = new Date();
+  start.setHours(0, 0, 0, 0);
   start.setFullYear(start.getFullYear() - 1);
+
+  const end = new Date();
+  end.setHours(23, 59, 59, 999);
 
   return { start, end };
 }
@@ -264,7 +295,7 @@ async function main() {
         start: formatLocalDate(start),
         end: formatLocalDate(end),
         providers: exportProviders.map((provider) =>
-          toJsonUsageSummary(provider),
+          toJsonUsageSummary(provider, start, end),
         ),
       };
 

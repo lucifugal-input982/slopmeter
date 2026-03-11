@@ -169,6 +169,7 @@ export function getRecentWindowStart(endDate: Date, days = 30) {
   const start = new Date(endDate);
 
   start.setDate(start.getDate() - (days - 1));
+  start.setHours(0, 0, 0, 0);
 
   return start;
 }
